@@ -1,0 +1,16 @@
+# Install torch and torchvision builds matching your CUDA environment first.
+torch
+torchvision
+
+ftfy
+gdown
+numpy
+Pillow
+prettytable
+regex
+scikit-learn
+scipy
+six
+tensorboard
+tqdm
+yacs
