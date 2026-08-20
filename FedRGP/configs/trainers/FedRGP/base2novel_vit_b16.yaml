@@ -1,0 +1,86 @@
+DATALOADER:
+  TRAIN_X:
+    BATCH_SIZE: 8
+  TEST:
+    BATCH_SIZE: 100
+  NUM_WORKERS: 16
+
+INPUT:
+  SIZE: (224, 224)
+  INTERPOLATION: "bicubic"
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
+
+OPTIM:
+  NAME: "sgd"
+  LR: 0.001
+  LR_SCHEDULER: "single_step"
+  ROUND: 10  # global rounds
+  MAX_EPOCH: 2  # local epochs
+  WARMUP_EPOCH: 0
+  WARMUP_TYPE: "constant"
+  WARMUP_CONS_LR: 1e-5
+  GAMMA: 1
+
+TRAIN:
+  PRINT_FREQ: 5
+
+TEST:
+  COMPUTE_CMAT: True
+  PER_CLASS_RESULT: True
+
+MODEL:
+  BACKBONE:
+    NAME: "ViT-B/16"
+    PRETRAINED: True
+
+DATASET:
+  SUBSAMPLE_CLASSES: "base"  # all, base or new
+  USERS: 10
+  IID: False
+  FRAC: 1.0
+  PARTITION: "class-disjoint"
+  USEALL: False  # use all data instead of few-shot
+  NUM_SHOTS: 4
+  BETA: 0.3
+  REPEATRATE: 0.0
+  LABEL_NOISE_RATIO: 0.2
+  LABEL_NOISE_TYPE: "symmetric"
+  LABEL_NOISE_SEED: 0
+  LABEL_NOISE_PER_CLIENT: True
+  IMBALANCE_TRAIN: False  # add label skew to feature skew
+  SPLIT_CLIENT: False  # split one domain to multi clients
+
+TRAINER:
+  FEDRGP:
+    N_CTX_VISION: 2  # vision prompt length
+    N_CTX_TEXT: 2  # text prompt length
+    NUM_PROMPTS_VISION: 2  # number of vision prompts (clean + noise)
+    NUM_PROMPTS_TEXT: 2  # number of text prompts (clean + noise)
+    CTX_INIT: "a photo of a"
+    PREC: "fp16"  # fp16, fp32, amp
+    PROMPT_DEPTH_VISION: 1  # 1 for shallow prompting only
+    PROMPT_DEPTH_TEXT: 1  # 1 for shallow prompting only
+    USE_DIVERGENT_LOSS: False
+    DIVERGENT_LOSS_WEIGHT: 0.0
+    # FedRGP: dual-stream prompts + global consensus
+    APG_ENABLED: False
+    APG_INIT_PROMPTS: 1
+    APG_MAX_PROMPTS: 2
+    APG_THRESHOLD: 0.3
+    GVG_ENABLED: False
+    GVG_LAMBDA: 0.5
+    ORTHO_WEIGHT: 0.0
+    RGP_ENABLED: True
+    RGP_TAU: 0.7
+    RGP_CONSIST_WEIGHT: 1.0
+    RGP_GLOBAL_MIX: 1.0
+    TOPK: 2  # top-k prompts for aggregation
+    AGGREGATE_HIGHEST_SIM: True  # True for highest similarity
+    SELECT_MODE: "similarity"  # similarity, random, top_fixed, all
+    INFERENCE_MODE: "average"  # average, selected_group, max_logits, feature_average
+    SELECTED_PROMPT_GROUP: 0  # used when INFERENCE_MODE=selected_group
+    PROBABILISTIC_SELECTION: True  # probabilistic selection based on similarity
+    TEMPERATURE: 1.0  # softmax temperature, higher = smoother
+    DIVERGENT_LOSS_TYPE: "l1"  # cos, l1, l2
