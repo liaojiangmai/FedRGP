@@ -1,6 +1,5 @@
-# FedRGP
+# FedRGP: Robust Global-Consensus Prompting for Federated Vision-Language Adaptation with Noisy Labels
 
-FedRGP: Robust Global-Consensus Prompting for Federated Vision-Language Adaptation with Noisy Labels
 ![FedRGP framework](assets/framework.png)
 ## Supported datasets
 
