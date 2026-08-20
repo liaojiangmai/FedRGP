@@ -1,6 +1,6 @@
 # FedRGP
 
-Official implementation of FedRGP for noisy-label federated prompt learning.
+FedRGP: Robust Global-Consensus Prompting for Federated Vision-Language Adaptation with Noisy Labels
 
 ## Supported datasets
 
